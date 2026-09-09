@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-void text-ink font-body antialiased;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(79, 224, 216, 0.06), transparent 40%),
+      radial-gradient(circle at 85% 30%, rgba(142, 124, 255, 0.08), transparent 45%);
+  }
+  h1, h2, h3 {
+    @apply font-display;
+  }
+  ::selection {
+    background: #4FE0D8;
+    color: #080B14;
+  }
+  :focus-visible {
+    outline: 2px solid #4FE0D8;
+    outline-offset: 3px;
+  }
+}
+
+@layer utilities {
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(29, 39, 64, 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29, 39, 64, 0.5) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
