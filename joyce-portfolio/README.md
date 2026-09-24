@@ -1,8 +1,11 @@
 # Joyce Alam — Portfolio
 
-A one-page portfolio built from your CV: React + Vite, Tailwind CSS for styling, and a Three.js
-network animation in the hero section (nodes/edges — a nod to full-stack + the AI interaction
-model on your CV). Sections: Hero, Experience, Skills, Education & Certifications, Contact.
+A one-page portfolio built from your CV: React + Vite, Tailwind CSS for styling, Framer Motion
+for scroll and entrance animation, and two Three.js scenes — a bloom-lit reactive core with an
+orbiting constellation in the hero, and a receding grid horizon behind the contact section.
+
+Sections: Hero, LbCare (flagship project), Trajectory (timeline), Stack, Education & Certifications,
+Contact.
 
 ## 1. Run it locally
 
@@ -24,15 +27,20 @@ component. The whole site re-reads from it automatically.
 
 Colors and fonts live in **`tailwind.config.js`** under `theme.extend`. The current palette:
 
-| Token    | Hex       | Used for                       |
-|----------|-----------|---------------------------------|
-| `void`   | `#080B14` | Background                      |
-| `panel`  | `#0E1424` | Card backgrounds                |
-| `line`   | `#1D2740` | Borders, dividers                |
-| `signal` | `#4FE0D8` | Cyan accent (CTAs, highlights)  |
-| `pulse`  | `#8E7CFF` | Violet accent (secondary)       |
-| `ink`    | `#E7ECF7` | Primary text                    |
-| `mute`   | `#7C8AAD` | Secondary text                  |
+| Token      | Hex       | Used for                          |
+|------------|-----------|-----------------------------------|
+| `void`     | `#04060F` | Page background                   |
+| `panel`    | `#0B1120` | Card backgrounds                  |
+| `line`     | `#1B2540` | Borders, dividers                 |
+| `signal`   | `#4FE0D8` | Cyan accent (CTAs, highlights)    |
+| `pulse`    | `#8B7CFF` | Violet accent (secondary)         |
+| `flare`    | `#FF5FA2` | Pink accent (gradient tail only)  |
+| `ink`      | `#E8EDFA` | Primary text                      |
+| `mute`     | `#7A88AB` | Secondary text                    |
+
+The three accents run together in `bg-signal-gradient` / `.text-gradient`, which is what the
+headline, stat numbers and primary button use. Change those three hexes and the whole site
+re-tints.
 
 ## 3. Build for production
 
@@ -96,13 +104,18 @@ joyce-portfolio/
 ├── src/
 │   ├── data/cvData.js       ← your CV content — edit this
 │   ├── components/
-│   │   ├── Nav.jsx
-│   │   ├── Hero.jsx         ← headline + 3D network background
-│   │   ├── Scene3D.jsx      ← the Three.js animation
-│   │   ├── Experience.jsx
+│   │   ├── Nav.jsx            ← glass nav, active-section tracking, mobile menu
+│   │   ├── Hero.jsx           ← kinetic headline + 3D stage
+│   │   ├── Scene3D.jsx        ← hero Three.js scene (core, rings, constellation, bloom)
+│   │   ├── GridScene.jsx      ← contact grid horizon
+│   │   ├── SceneBoundary.jsx  ← hides the canvas if WebGL fails
+│   │   ├── Chrome.jsx         ← preloader, scroll bar, cursor glow, aurora
+│   │   ├── Highlights.jsx     ← LbCare project cards
+│   │   ├── Experience.jsx     ← timeline with scroll-driven beam
 │   │   ├── Skills.jsx
 │   │   ├── Education.jsx
-│   │   └── Contact.jsx
+│   │   ├── Contact.jsx
+│   │   └── ui/                ← Reveal, TiltCard, Magnetic, SectionHeading
 │   ├── App.jsx
 │   └── index.css
 ├── index.html
@@ -112,8 +125,11 @@ joyce-portfolio/
 
 ## Notes
 
-- The 3D scene is lazy-loaded so the rest of the page renders instantly even on slower
-  connections.
-- Motion respects `prefers-reduced-motion` for accessibility.
-- Everything is responsive down to mobile; the nav collapses its links below `sm` breakpoint (you
-  may want to add a mobile menu button if you plan on adding more links later).
+- Both 3D scenes are lazy-loaded, so the page paints before Three.js arrives. If WebGL is
+  unavailable or crashes, `SceneBoundary` hides the canvas and the page stays fully readable.
+- Motion respects `prefers-reduced-motion`: `MotionConfig reducedMotion="user"` disables every
+  Framer transform, the preloader is skipped, the grid scene is not mounted, and the hero scene
+  stops animating.
+- Everything is responsive down to mobile, with a full-screen menu below the `md` breakpoint.
+- Content still lives entirely in `src/data/cvData.js` — including the `headline`, `lead`, `stats`
+  and `flagship` entries that feed the hero and the LbCare section.

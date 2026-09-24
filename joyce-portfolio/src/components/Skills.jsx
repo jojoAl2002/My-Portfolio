@@ -1,34 +1,56 @@
+import Reveal from './ui/Reveal'
+import TiltCard from './ui/TiltCard'
+import SectionHeading from './ui/SectionHeading'
+import TechOrbit from './TechOrbit'
 import { skillGroups } from '../data/cvData'
 
 export default function Skills() {
   return (
-    <section id="skills" className="relative py-28 border-t border-line/70">
+    <section id="skills" className="relative z-10 border-t border-line/50 py-28 md:py-36">
       <div className="mx-auto max-w-6xl px-6 md:px-10">
-        <div className="grid md:grid-cols-[280px_1fr] gap-12">
-          <div>
-            <h2 className="font-display text-3xl md:text-4xl text-ink">What I work with</h2>
-            <p className="mt-4 text-mute max-w-xs">
-              A stack built across healthcare software, Shopify storefronts and a few detours into
-              embedded systems and ERP.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 gap-x-10 gap-y-10">
-            {skillGroups.map((group) => (
-              <div key={group.label}>
-                <h3 className="font-mono text-sm text-signal mb-3">{group.label}</h3>
-                <ul className="flex flex-wrap gap-2">
+        {/* Heading and sphere share the fold — the sphere is the section's subject */}
+        <div className="grid items-center gap-14 lg:grid-cols-[1fr_minmax(0,520px)]">
+          <SectionHeading
+            index="04"
+            kicker="Stack"
+            title="What I work with, grouped by where it lives."
+            blurb="Built across healthcare software and Shopify storefronts, with detours into embedded systems, ERP and BI that still pay off. The lit tags are the ones I reach for first."
+          />
+
+          <Reveal delay={0.15}>
+            <TechOrbit />
+          </Reveal>
+        </div>
+
+        <div className="perspective mt-20 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {skillGroups.map((group, i) => (
+            <Reveal key={group.label} delay={(i % 3) * 0.08}>
+              <TiltCard intensity={6} className="h-full p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-mono text-[12px] uppercase tracking-[0.18em] text-mint">
+                    {group.label}
+                  </h3>
+                  <span className="font-mono text-[11px] text-mute">
+                    {String(group.items.length).padStart(2, '0')}
+                  </span>
+                </div>
+
+                <div className="mt-4 h-px w-full bg-gradient-to-r from-mint/40 via-iris/20 to-transparent" />
+
+                <ul className="mt-5 flex flex-wrap gap-2">
                   {group.items.map((item) => (
                     <li
                       key={item}
-                      className="rounded-md border border-line px-3 py-1.5 text-sm text-ink/90 bg-panel/50"
+                      className="rounded-lg border border-white/[0.07] bg-white/[0.03] px-3 py-1.5 text-[13px] text-ink/85
+                                 transition-all duration-300 hover:border-mint/40 hover:bg-mint/[0.08] hover:text-ink"
                     >
                       {item}
                     </li>
                   ))}
                 </ul>
-              </div>
-            ))}
-          </div>
+              </TiltCard>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
